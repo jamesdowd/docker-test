@@ -5,12 +5,17 @@ import os
 import sys
 from datetime import datetime
 from time import sleep
-#import argparse
+import argparse
 import json
+
+parser = argparse.ArgumentParser()
+parser.add_argument("server", type=str,help="server address")
+parser.add_argument("port", type=int, help="port number")
+args = parser.parse_args()
 
 #Connect to processing queues
 print('Connecting to processing queues...')
-beanstalk = pystalkd.Beanstalkd.Connection('192.168.1.123', 11305)
+beanstalk = pystalkd.Beanstalkd.Connection(args.server, args.port)
 beanstalk.use('test_send')
 beanstalk.watch('test_response')
 
