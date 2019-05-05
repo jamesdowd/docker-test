@@ -1,0 +1,31 @@
+version: '2.2'
+services:
+  bean:
+    image: beanstalkd
+    container_name: beanstalkd
+    environment:
+      - port=11303
+    volumes:
+      - testdata:/usr/share/beanstalkd/data
+    ports:
+      - 0.0.0.0:11303:11303
+    networks:
+      - beannet
+
+  python-receive:
+    image: python-receive
+    environment:
+      - port=11303
+      - server=bean
+    networks:
+      - beannet
+    depends_on:
+      - bean
+
+volumes:
+  testdata:
+    driver: local
+
+networks:
+  beannet:
+    driver: bridge
