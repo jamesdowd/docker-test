@@ -4,18 +4,18 @@ services:
     image: beanstalkd
     container_name: beanstalkd
     environment:
-      - port=11303
+      - port=${port}
     volumes:
       - testdata:/usr/share/beanstalkd/data
     ports:
-      - 0.0.0.0:11303:11303
+      - 0.0.0.0:${port}:${port}
     networks:
       - beannet
 
   python-receive:
     image: python-receive
     environment:
-      - port=11303
+      - port=${port}
       - server=bean
     networks:
       - beannet
