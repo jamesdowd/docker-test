@@ -10,7 +10,7 @@ import json
 
 #Connect to processing queues
 print('Connecting to processing queues...')
-beanstalk = pystalkd.Beanstalkd.Connection('192.168.1.123', 11303)
+beanstalk = pystalkd.Beanstalkd.Connection('192.168.1.123', 11305)
 beanstalk.use('test_send')
 beanstalk.watch('test_response')
 
