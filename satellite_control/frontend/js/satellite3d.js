@@ -2,24 +2,24 @@
  * Three.js 3D Satellite Model & Scene
  *
  * Procedurally generates a satellite with clickable subsystem parts.
- * Color-coded by status: green=on/nominal, gray=off, red=error, yellow=rebooting.
+ * Color-coded by status using Mouser accent palette (#00d4aa).
  */
 
 const SatelliteColors = {
-    on:        0x00e676,
-    nominal:   0x00e676,
-    off:       0x556680,
-    unknown:   0x556680,
-    error:     0xff5252,
-    rebooting: 0xffab00,
+    on:        0x00d4aa,  // Mouser accent
+    nominal:   0x00d4aa,
+    off:       0x606078,  // Mouser textDim
+    unknown:   0x606078,
+    error:     0xff4466,  // Mouser danger
+    rebooting: 0xffaa44,  // Mouser warning
 };
 
 const SatelliteEmissive = {
-    on:        0x003d1f,
-    nominal:   0x003d1f,
+    on:        0x0d2e26,  // Mouser accentDim
+    nominal:   0x0d2e26,
     off:       0x111111,
     unknown:   0x111111,
-    error:     0x3d0000,
+    error:     0x3d0011,
     rebooting: 0x3d2a00,
 };
 
@@ -47,7 +47,7 @@ class Satellite3D {
             alpha: false,
         });
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setClearColor(0x0a0e17);
+        this.renderer.setClearColor(0x1a1a2e);
 
         // Scene
         this.scene = new THREE.Scene();
@@ -363,7 +363,7 @@ class Satellite3D {
         for (const mat of mats) {
             if (highlight) {
                 mat._origEmissive = mat.emissive.getHex();
-                mat.emissive.setHex(0x334466);
+                mat.emissive.setHex(0x0d2e26);
             } else if (mat._origEmissive !== undefined) {
                 mat.emissive.setHex(mat._origEmissive);
             }

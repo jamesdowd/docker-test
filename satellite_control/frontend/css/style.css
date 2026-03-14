@@ -1,4 +1,6 @@
-/* Satellite Control System - Dark Theme */
+/* Satellite Control System — Mouser-inspired Theme
+   Colors from Theme.js: #1a1a2e bg, #00d4aa accent, Segoe UI font */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,107 +8,218 @@
 }
 
 :root {
-    --bg-primary: #0a0e17;
-    --bg-secondary: #131a2b;
-    --bg-panel: #1a2235;
-    --bg-hover: #243050;
-    --text-primary: #e0e6f0;
-    --text-secondary: #8899b3;
-    --text-dim: #556680;
-    --accent-blue: #4a9eff;
-    --accent-cyan: #00d4ff;
-    --status-nominal: #00e676;
-    --status-warning: #ffab00;
-    --status-error: #ff5252;
-    --status-off: #556680;
-    --border-color: #2a3a55;
-    --font-mono: 'Courier New', 'Consolas', monospace;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* ── Mouser palette ── */
+    --bg:            #1a1a2e;
+    --bg-card:       #16213e;
+    --bg-card-hover: #1f3460;
+    --bg-sidebar:    #0f1525;
+    --bg-input:      #111827;
+    --accent:        #00d4aa;
+    --accent-hover:  #00ffc8;
+    --accent-dim:    #0d2e26;
+    --text-primary:  #e0e0e0;
+    --text-secondary:#808098;
+    --text-dim:      #606078;
+    --border:        #2a2a40;
+    --danger:        #ff4466;
+    --success:       #00d4aa;
+    --warning:       #ffaa44;
+    --radius:        12px;
+    --font:          'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono:     'Consolas', 'Courier New', monospace;
 }
 
 body {
-    background: var(--bg-primary);
+    background: var(--bg);
     color: var(--text-primary);
-    font-family: var(--font-sans);
+    font-family: var(--font);
     overflow: hidden;
     height: 100vh;
     width: 100vw;
 }
 
-/* Link Status Bar */
-#link-status-bar {
+/* ═══════════════════════════════════════════════════
+   Sidebar — 64px icon rail (matches Mouser)
+   ═══════════════════════════════════════════════════ */
+#sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 40px;
-    background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
+    width: 64px;
+    height: 100vh;
+    background: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12px;
+    gap: 4px;
+    z-index: 200;
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-brand {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--accent);
     display: flex;
     align-items: center;
-    padding: 0 20px;
-    gap: 24px;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--bg-sidebar);
+    margin-bottom: 16px;
+}
+
+.nav-item {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--text-secondary);
+    position: relative;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav-item:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    color: var(--accent);
+}
+
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 24px;
+    background: var(--accent);
+    border-radius: 0 3px 3px 0;
+}
+
+.nav-spacer {
+    flex: 1;
+}
+
+/* ═══════════════════════════════════════════════════
+   Header bar (right of sidebar)
+   ═══════════════════════════════════════════════════ */
+#header-bar {
+    position: fixed;
+    top: 0;
+    left: 64px;
+    right: 0;
+    height: 52px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
     z-index: 100;
-    font-size: 13px;
+}
+
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.header-badge {
+    margin-left: 10px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.header-links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 .link-indicator {
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 12px;
 }
 
 .link-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--status-off);
-    transition: background 0.3s;
+    background: var(--text-dim);
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .link-dot.active {
-    background: var(--status-nominal);
-    box-shadow: 0 0 6px var(--status-nominal);
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 170, 0.5);
 }
 
 .link-dot.error {
-    background: var(--status-error);
-    box-shadow: 0 0 6px var(--status-error);
+    background: var(--danger);
+    box-shadow: 0 0 8px rgba(255, 68, 102, 0.5);
 }
 
 .link-name {
-    color: var(--text-primary);
+    color: var(--text-secondary);
     font-weight: 500;
 }
 
 .link-details {
-    color: var(--text-secondary);
-    font-size: 11px;
+    color: var(--text-dim);
+    font-size: 10px;
     font-family: var(--font-mono);
 }
 
-.mqtt-status {
-    margin-left: auto;
+.header-status {
     display: flex;
     align-items: center;
-    gap: 8px;
-    color: var(--text-secondary);
+    gap: 6px;
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
 }
 
-/* Main Content */
+.header-status .link-dot {
+    width: 6px;
+    height: 6px;
+}
+
+/* ═══════════════════════════════════════════════════
+   Main content area
+   ═══════════════════════════════════════════════════ */
 #main-content {
     position: fixed;
-    top: 40px;
-    left: 0;
+    top: 52px;
+    left: 64px;
     right: 0;
-    bottom: 160px;
+    bottom: 0;
     display: flex;
 }
 
+/* ═══════════════════════════════════════════════════
+   3D Viewer
+   ═══════════════════════════════════════════════════ */
 #viewer-container {
     flex: 1;
     position: relative;
     cursor: grab;
+    overflow: hidden;
 }
 
 #viewer-container:active {
@@ -119,24 +232,154 @@ body {
     display: block;
 }
 
-#hover-label {
+/* ── Callout annotations (Mouser HotspotDot style) ── */
+
+.callout {
     position: absolute;
-    background: rgba(26, 34, 53, 0.9);
-    color: var(--text-primary);
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 12px;
     pointer-events: none;
-    display: none;
-    border: 1px solid var(--border-color);
-    white-space: nowrap;
+    z-index: 10;
 }
 
-/* Subsystem Panel */
+.callout-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    pointer-events: all;
+    transition: transform 0.15s ease, background 0.15s;
+    z-index: 12;
+}
+
+.callout-dot:hover {
+    transform: scale(1.2);
+}
+
+.callout-dot.selected {
+    background: var(--accent-hover);
+}
+
+/* Glow ring around dot */
+.callout-glow {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    pointer-events: none;
+    z-index: 11;
+    transition: border-color 0.2s, opacity 0.2s;
+}
+
+.callout-dot.selected + .callout-glow,
+.callout-dot:hover + .callout-glow {
+    border-width: 2px;
+    border-color: var(--accent);
+    opacity: 1;
+}
+
+.callout-dot.selected + .callout-glow {
+    animation: pulse-glow 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.25); opacity: 1; }
+}
+
+/* Dashed connecting line (SVG) */
+.callout-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9;
+    overflow: visible;
+}
+
+.callout-line line {
+    stroke: rgba(0, 212, 170, 0.35);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+    transition: stroke 0.2s;
+}
+
+.callout.selected .callout-line line {
+    stroke: var(--accent);
+}
+
+/* Small endpoint dot */
+.callout-endpoint {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0, 212, 170, 0.5);
+    pointer-events: none;
+    z-index: 12;
+    transition: background 0.2s;
+}
+
+.callout.selected .callout-endpoint {
+    background: var(--accent);
+}
+
+/* Label box */
+.callout-label {
+    position: absolute;
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+    pointer-events: all;
+    transition: background 0.2s, border-color 0.2s;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    z-index: 13;
+}
+
+.callout-label:hover,
+.callout.selected .callout-label {
+    background: rgba(0, 212, 170, 0.12);
+    border-color: rgba(0, 212, 170, 0.3);
+}
+
+.callout-label-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-primary);
+    transition: color 0.15s;
+}
+
+.callout.selected .callout-label-title {
+    color: var(--accent);
+}
+
+.callout-label-sub {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 1px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Hover label (legacy, now replaced by callouts) */
+#hover-label {
+    display: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   Subsystem Detail Panel — Action Picker area
+   ═══════════════════════════════════════════════════ */
 #subsystem-panel {
-    width: 320px;
-    background: var(--bg-panel);
-    border-left: 1px solid var(--border-color);
+    width: 340px;
+    background: var(--bg);
+    border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease, opacity 0.3s ease;
@@ -150,42 +393,71 @@ body {
     right: 0;
     top: 0;
     bottom: 0;
+    pointer-events: none;
 }
 
 .panel-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px;
-    border-bottom: 1px solid var(--border-color);
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
 }
 
 .panel-header h2 {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--accent-cyan);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-header h2::before {
+    content: '';
+    width: 3px;
+    height: 18px;
+    background: var(--accent);
+    border-radius: 2px;
+}
+
+.panel-subtitle {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
 }
 
 #panel-close {
     background: none;
     border: none;
-    color: var(--text-secondary);
-    font-size: 20px;
+    color: var(--text-dim);
+    font-size: 18px;
     cursor: pointer;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
 }
 
 #panel-close:hover {
-    background: var(--bg-hover);
+    background: var(--bg-card-hover);
     color: var(--text-primary);
 }
 
 .panel-body {
-    padding: 16px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+}
+
+/* Section labels (like Mouser's BROWSER, EDITING, etc.) */
+.section-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 4px;
 }
 
 .status-row {
@@ -200,41 +472,46 @@ body {
 }
 
 .status-badge {
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .status-badge.on, .status-badge.nominal {
-    background: rgba(0, 230, 118, 0.15);
-    color: var(--status-nominal);
+    background: var(--accent-dim);
+    color: var(--accent);
 }
 
 .status-badge.off, .status-badge.unknown {
-    background: rgba(85, 102, 128, 0.15);
-    color: var(--status-off);
+    background: rgba(96, 96, 120, 0.15);
+    color: var(--text-dim);
 }
 
 .status-badge.error {
-    background: rgba(255, 82, 82, 0.15);
-    color: var(--status-error);
+    background: rgba(255, 68, 102, 0.12);
+    color: var(--danger);
 }
 
 .status-badge.rebooting {
-    background: rgba(255, 171, 0, 0.15);
-    color: var(--status-warning);
+    background: rgba(255, 170, 68, 0.12);
+    color: var(--warning);
 }
 
-/* Metrics display */
+/* Metrics */
 .metric-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid rgba(42, 58, 85, 0.5);
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
     font-size: 13px;
+}
+
+.metric-row:last-child {
+    border-bottom: none;
 }
 
 .metric-label {
@@ -244,70 +521,75 @@ body {
 .metric-value {
     color: var(--text-primary);
     font-family: var(--font-mono);
-    font-size: 13px;
+    font-size: 12px;
 }
 
-/* Command Buttons */
+/* ── Action Chips (Mouser ActionChip style) ── */
 .command-buttons {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    padding-top: 8px;
 }
 
 .cmd-btn {
-    padding: 8px 18px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background: var(--bg-secondary);
+    height: 34px;
+    padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg-card);
     color: var(--text-primary);
-    font-size: 13px;
+    font-size: 12px;
+    font-family: var(--font);
     cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-sans);
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
 }
 
 .cmd-btn:hover {
-    background: var(--bg-hover);
-    border-color: var(--accent-blue);
+    background: var(--bg-card-hover);
 }
 
 .cmd-btn.on {
-    border-color: var(--status-nominal);
-    color: var(--status-nominal);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg-sidebar);
+    font-weight: 600;
 }
 
 .cmd-btn.on:hover {
-    background: rgba(0, 230, 118, 0.1);
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
 }
 
 .cmd-btn.off {
-    border-color: var(--status-off);
+    border-color: var(--border);
     color: var(--text-secondary);
 }
 
 .cmd-btn.off:hover {
-    background: rgba(85, 102, 128, 0.1);
+    background: var(--bg-card-hover);
+    border-color: var(--text-dim);
 }
 
 .cmd-btn.reboot {
-    border-color: var(--status-warning);
-    color: var(--status-warning);
+    border-color: var(--warning);
+    color: var(--warning);
 }
 
 .cmd-btn.reboot:hover {
-    background: rgba(255, 171, 0, 0.1);
+    background: rgba(255, 170, 68, 0.1);
 }
 
-/* Command Console */
+/* ═══════════════════════════════════════════════════
+   Command Console
+   ═══════════════════════════════════════════════════ */
 #command-console {
     position: fixed;
-    left: 0;
+    left: 64px;
     right: 0;
     bottom: 0;
-    height: 160px;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
+    height: 140px;
+    background: var(--bg-sidebar);
+    border-top: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     z-index: 100;
@@ -315,36 +597,44 @@ body {
 }
 
 #command-console.collapsed {
-    height: 32px;
+    height: 30px;
 }
 
 .console-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 16px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 13px;
-    color: var(--text-secondary);
+    padding: 5px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
     flex-shrink: 0;
 }
 
 #console-toggle {
     background: none;
     border: none;
-    color: var(--text-secondary);
+    color: var(--text-dim);
     cursor: pointer;
-    font-size: 12px;
+    font-size: 10px;
     padding: 2px 6px;
+    transition: color 0.15s;
+}
+
+#console-toggle:hover {
+    color: var(--text-secondary);
 }
 
 .console-body {
     flex: 1;
     overflow-y: auto;
-    padding: 8px 16px;
+    padding: 6px 16px;
     font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.7;
 }
 
 .console-entry {
@@ -362,24 +652,26 @@ body {
 }
 
 .console-msg.cmd {
-    color: var(--accent-cyan);
+    color: var(--accent);
 }
 
 .console-msg.ack {
-    color: var(--status-nominal);
+    color: var(--success);
 }
 
 .console-msg.error {
-    color: var(--status-error);
+    color: var(--danger);
 }
 
 .console-msg.info {
     color: var(--text-secondary);
 }
 
-/* Scrollbar */
+/* ═══════════════════════════════════════════════════
+   Scrollbar
+   ═══════════════════════════════════════════════════ */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -387,7 +679,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--border-color);
+    background: var(--border);
     border-radius: 3px;
 }
 
