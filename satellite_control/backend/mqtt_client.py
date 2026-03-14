@@ -56,7 +56,7 @@ class MQTTClient:
         self._on_connection_change = on_connection
 
     def connect(self):
-        """Connect to MQTT broker with retry logic."""
+        """Connect to MQTT broker with retry logic (non-blocking)."""
         self._should_run = True
         self._client = mqtt.Client(
             client_id=self._client_id,
@@ -66,7 +66,10 @@ class MQTTClient:
         self._client.on_disconnect = self._on_disconnect
         self._client.on_message = self._on_message
 
-        self._try_connect()
+        self._retry_thread = threading.Thread(
+            target=self._try_connect, daemon=True
+        )
+        self._retry_thread.start()
 
     def _try_connect(self):
         """Attempt connection with exponential backoff."""
