@@ -1,0 +1,51 @@
+/**
+ * Communication Link Status Indicators
+ *
+ * Top bar showing Laser ISL, S-Band, and K-Band link status.
+ */
+
+class LinkStatusBar {
+    constructor() {
+        this.indicators = {};
+        this.mqttDot = document.getElementById('mqtt-dot');
+
+        document.querySelectorAll('.link-indicator').forEach(el => {
+            const linkId = el.dataset.link;
+            this.indicators[linkId] = {
+                element: el,
+                dot: el.querySelector('.link-dot'),
+                details: el.querySelector('.link-details'),
+            };
+        });
+    }
+
+    updateLink(linkId, data) {
+        const ind = this.indicators[linkId];
+        if (!ind) return;
+
+        const active = data.active;
+        ind.dot.className = 'link-dot' + (active ? ' active' : '');
+
+        const parts = [];
+        if (data.signal_dbm != null) {
+            parts.push(`${data.signal_dbm.toFixed(0)} dBm`);
+        }
+        if (data.latency_ms != null) {
+            parts.push(`${data.latency_ms.toFixed(0)} ms`);
+        }
+        if (data.data_rate_kbps != null) {
+            parts.push(`${data.data_rate_kbps.toFixed(1)} kbps`);
+        }
+        ind.details.textContent = parts.join(' | ');
+    }
+
+    loadFullState(links) {
+        for (const [id, data] of Object.entries(links)) {
+            this.updateLink(id, data);
+        }
+    }
+
+    setMqttStatus(connected) {
+        this.mqttDot.className = 'link-dot' + (connected ? ' active' : ' error');
+    }
+}

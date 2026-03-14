@@ -1,0 +1,396 @@
+/* Satellite Control System - Dark Theme */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-primary: #0a0e17;
+    --bg-secondary: #131a2b;
+    --bg-panel: #1a2235;
+    --bg-hover: #243050;
+    --text-primary: #e0e6f0;
+    --text-secondary: #8899b3;
+    --text-dim: #556680;
+    --accent-blue: #4a9eff;
+    --accent-cyan: #00d4ff;
+    --status-nominal: #00e676;
+    --status-warning: #ffab00;
+    --status-error: #ff5252;
+    --status-off: #556680;
+    --border-color: #2a3a55;
+    --font-mono: 'Courier New', 'Consolas', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Link Status Bar */
+#link-status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 24px;
+    z-index: 100;
+    font-size: 13px;
+}
+
+.link-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.link-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-off);
+    transition: background 0.3s;
+}
+
+.link-dot.active {
+    background: var(--status-nominal);
+    box-shadow: 0 0 6px var(--status-nominal);
+}
+
+.link-dot.error {
+    background: var(--status-error);
+    box-shadow: 0 0 6px var(--status-error);
+}
+
+.link-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.link-details {
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-family: var(--font-mono);
+}
+
+.mqtt-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+/* Main Content */
+#main-content {
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 160px;
+    display: flex;
+}
+
+#viewer-container {
+    flex: 1;
+    position: relative;
+    cursor: grab;
+}
+
+#viewer-container:active {
+    cursor: grabbing;
+}
+
+#satellite-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#hover-label {
+    position: absolute;
+    background: rgba(26, 34, 53, 0.9);
+    color: var(--text-primary);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    display: none;
+    border: 1px solid var(--border-color);
+    white-space: nowrap;
+}
+
+/* Subsystem Panel */
+#subsystem-panel {
+    width: 320px;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    overflow-y: auto;
+}
+
+#subsystem-panel.hidden {
+    transform: translateX(100%);
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+}
+
+#panel-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+#panel-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.panel-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.status-badge {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.on, .status-badge.nominal {
+    background: rgba(0, 230, 118, 0.15);
+    color: var(--status-nominal);
+}
+
+.status-badge.off, .status-badge.unknown {
+    background: rgba(85, 102, 128, 0.15);
+    color: var(--status-off);
+}
+
+.status-badge.error {
+    background: rgba(255, 82, 82, 0.15);
+    color: var(--status-error);
+}
+
+.status-badge.rebooting {
+    background: rgba(255, 171, 0, 0.15);
+    color: var(--status-warning);
+}
+
+/* Metrics display */
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(42, 58, 85, 0.5);
+    font-size: 13px;
+}
+
+.metric-label {
+    color: var(--text-secondary);
+}
+
+.metric-value {
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+/* Command Buttons */
+.command-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+}
+
+.cmd-btn {
+    padding: 8px 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-sans);
+}
+
+.cmd-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-blue);
+}
+
+.cmd-btn.on {
+    border-color: var(--status-nominal);
+    color: var(--status-nominal);
+}
+
+.cmd-btn.on:hover {
+    background: rgba(0, 230, 118, 0.1);
+}
+
+.cmd-btn.off {
+    border-color: var(--status-off);
+    color: var(--text-secondary);
+}
+
+.cmd-btn.off:hover {
+    background: rgba(85, 102, 128, 0.1);
+}
+
+.cmd-btn.reboot {
+    border-color: var(--status-warning);
+    color: var(--status-warning);
+}
+
+.cmd-btn.reboot:hover {
+    background: rgba(255, 171, 0, 0.1);
+}
+
+/* Command Console */
+#command-console {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 160px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: height 0.3s ease;
+}
+
+#command-console.collapsed {
+    height: 32px;
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 16px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 13px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+#console-toggle {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+.console-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.console-entry {
+    display: flex;
+    gap: 10px;
+}
+
+.console-time {
+    color: var(--text-dim);
+    flex-shrink: 0;
+}
+
+.console-msg {
+    color: var(--text-primary);
+}
+
+.console-msg.cmd {
+    color: var(--accent-cyan);
+}
+
+.console-msg.ack {
+    color: var(--status-nominal);
+}
+
+.console-msg.error {
+    color: var(--status-error);
+}
+
+.console-msg.info {
+    color: var(--text-secondary);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-dim);
+}

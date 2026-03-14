@@ -1,0 +1,20 @@
+{
+  "subsystems": [
+    {"id": "solar_panels", "name": "Solar Panels", "commands": ["on", "off"]},
+    {"id": "s_band_antenna", "name": "S-Band Antenna", "commands": ["on", "off", "reboot"]},
+    {"id": "k_band_antenna", "name": "K-Band Antenna", "commands": ["on", "off", "reboot"]},
+    {"id": "laser_isl", "name": "Laser ISL Terminal", "commands": ["on", "off", "reboot"]},
+    {"id": "reaction_wheels", "name": "Reaction Wheels", "commands": ["on", "off", "reboot"]},
+    {"id": "thrusters", "name": "Thrusters", "commands": ["on", "off"]},
+    {"id": "battery", "name": "Battery Pack", "commands": ["on", "off"]},
+    {"id": "obc", "name": "On-Board Computer", "commands": ["on", "off", "reboot"]},
+    {"id": "payload_optical", "name": "Payload — Optical", "commands": ["on", "off", "reboot"]},
+    {"id": "payload_swir", "name": "Payload — SWIR", "commands": ["on", "off", "reboot"]},
+    {"id": "payload_ir", "name": "Payload — IR", "commands": ["on", "off", "reboot"]}
+  ],
+  "links": [
+    {"id": "laser_isl", "name": "Laser ISL"},
+    {"id": "s_band", "name": "S-Band Ground"},
+    {"id": "k_band", "name": "K-Band Ground"}
+  ]
+}

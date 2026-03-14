@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satellite Control System</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Link Status Bar -->
+    <div id="link-status-bar">
+        <div class="link-indicator" data-link="laser_isl">
+            <span class="link-dot"></span>
+            <span class="link-name">Laser ISL</span>
+            <span class="link-details"></span>
+        </div>
+        <div class="link-indicator" data-link="s_band">
+            <span class="link-dot"></span>
+            <span class="link-name">S-Band</span>
+            <span class="link-details"></span>
+        </div>
+        <div class="link-indicator" data-link="k_band">
+            <span class="link-dot"></span>
+            <span class="link-name">K-Band</span>
+            <span class="link-details"></span>
+        </div>
+        <div class="mqtt-status">
+            <span class="link-dot" id="mqtt-dot"></span>
+            <span>MQTT</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- 3D Viewer -->
+        <div id="viewer-container">
+            <canvas id="satellite-canvas"></canvas>
+            <div id="hover-label"></div>
+        </div>
+
+        <!-- Subsystem Detail Panel -->
+        <div id="subsystem-panel" class="panel hidden">
+            <div class="panel-header">
+                <h2 id="panel-title">Subsystem</h2>
+                <button id="panel-close">&times;</button>
+            </div>
+            <div class="panel-body">
+                <div class="status-row">
+                    <span class="label">Status</span>
+                    <span id="panel-status" class="status-badge">unknown</span>
+                </div>
+                <div id="panel-metrics"></div>
+                <div id="panel-commands" class="command-buttons"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Console -->
+    <div id="command-console">
+        <div class="console-header">
+            <span>Command Console</span>
+            <button id="console-toggle">&#9660;</button>
+        </div>
+        <div id="console-log" class="console-body"></div>
+    </div>
+
+    <!-- Three.js and OrbitControls from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Application modules -->
+    <script src="/static/js/websocket.js"></script>
+    <script src="/static/js/satellite3d.js"></script>
+    <script src="/static/js/subsystem_panel.js"></script>
+    <script src="/static/js/command_console.js"></script>
+    <script src="/static/js/link_status.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
